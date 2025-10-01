@@ -56,6 +56,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // DOMContentLoaded event ensures the HTML document has fully loaded
-    // All event listeners are now properly attached
+    // Invoke the addTask function on DOMContentLoaded
+    // This ensures your data fetching logic runs once the HTML document has fully loaded
+    // Note: This will show an alert for empty input, which is expected behavior
+    addTask();
 });
