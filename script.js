@@ -7,6 +7,46 @@ document.addEventListener('DOMContentLoaded', function() {
     const taskInput = document.getElementById('task-input');
     const taskList = document.getElementById('task-list');
     
+    // Load Tasks Function
+    function loadTasks() {
+        const storedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        storedTasks.forEach(taskText => {
+            if (taskText.trim() !== '') {
+                // Create a new li element
+                const li = document.createElement('li');
+                li.textContent = taskText;
+                
+                // Create a new button element for removing the task
+                const removeButton = document.createElement('button');
+                removeButton.textContent = "Remove";
+                removeButton.classList.add('remove-btn');
+                
+                // Assign an onclick event to the remove button
+                removeButton.onclick = function() {
+                    taskList.removeChild(li);
+                    // Update Local Storage after removal
+                    updateLocalStorage();
+                };
+                
+                // Append the remove button to the li element
+                li.appendChild(removeButton);
+                
+                // Append the li to taskList
+                taskList.appendChild(li);
+            }
+        });
+    }
+    
+    // Update Local Storage function
+    function updateLocalStorage() {
+        const tasks = [];
+        const taskElements = taskList.querySelectorAll('li');
+        taskElements.forEach(li => {
+            tasks.push(li.textContent.replace('Remove', '').trim());
+        });
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+    
     // Create the addTask Function
     function addTask() {
         // Retrieve and trim the value from the task input field
@@ -32,6 +72,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Assign an onclick event to the remove button
             removeButton.onclick = function() {
                 taskList.removeChild(li);
+                // Update Local Storage after removal
+                updateLocalStorage();
             };
             
             // Append the remove button to the li element
@@ -42,6 +84,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Clear the task input field
             taskInput.value = "";
+            
+            // Save to Local Storage
+            updateLocalStorage();
         }
     }
     
@@ -56,7 +101,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Invoke the addTask function on DOMContentLoaded
-    // This ensures your data fetching logic runs once the HTML document has fully loaded
-    addTask();
+    // Load tasks from Local Storage when page loads
+    loadTasks();
 });
