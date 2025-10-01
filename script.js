@@ -55,4 +55,8 @@ document.addEventListener('DOMContentLoaded', function() {
             addTask();
         }
     });
+    
+    // Invoke the addTask function on DOMContentLoaded
+    // This ensures your data fetching logic runs once the HTML document has fully loaded
+    addTask();
 });
